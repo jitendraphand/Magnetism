@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 8 MCQ: Magnetism, Dynamics & Sound</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        header p { opacity: 0.9; }
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 25px;
+            background: #ecf0f1;
+            font-weight: bold;
+        }
+        .timer {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+        }
+        .timer.warning { background: #f39c12; }
+        .timer.danger { background: #c0392b; animation: pulse 0.5s infinite; }
+        @keyframes pulse { 50% { opacity: 0.7; } }
+        .question-container { padding: 30px; }
+        .topic-badge {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+        .question { font-size: 1.2em; margin-bottom: 25px; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1em;
+        }
+        .option:hover { border-color: #3498db; background: #f8f9fa; }
+        .option.selected { border-color: #3498db; background: #e3f2fd; }
+        .option.correct { border-color: #27ae60; background: #d5f4e6; }
+        .option.incorrect { border-color: #e74c3c; background: #fadbd8; }
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn-next { background: #27ae60; color: white; }
+        .btn-next:hover { background: #219a52; }
+        .btn-next:disabled { background: #95a5a6; cursor: not-allowed; }
+        .result {
+            text-align: center;
+            padding: 50px 30px;
+        }
+        .result h2 { color: #27ae60; margin-bottom: 20px; }
+        .score { font-size: 3em; font-weight: bold; color: #2c3e50; }
+        .restart { background: #3498db; color: white; margin-top: 20px; }
+        .progress-bar {
+            height: 6px;
+            background: #ecf0f1;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #3498db;
+            transition: width 0.3s;
+        }
+        .feedback { margin-top: 15px; font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Grade 8 Science MCQ Quiz</h1>
+            <p>Magnetism • Dynamics (Force & Motion) • Sound</p>
+        </header>
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        <div class="quiz-info">
+            <span id="q-number">Question 1 of 80</span>
+            <span class="timer" id="timer">60</span>
+        </div>
+        <div class="question-container" id="quiz-area">
+            <!-- Dynamic content -->
+        </div>
+        <div class="controls" id="controls">
+            <span id="score-display">Score: 0</span>
+            <button class="btn-next" id="next-btn" disabled>Next Question</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // Magnetism (25)
+            {topic: "Magnetism", q: "Which of the following is used to find the direction?", options: ["Compass", "Electromagnet", "Battery", "Switch"], correct: 0},
+            {topic: "Magnetism", q: "The region around a magnet where the influence of magnetic force is felt is called:", options: ["Magnetic induction", "Magnetic field", "Magnetic flux", "Magnetic domain"], correct: 1},
+            {topic: "Magnetism", q: "Like poles of two magnets:", options: ["Attract each other", "Repel each other", "Have no effect", "Neutralize each other"], correct: 1},
+            {topic: "Magnetism", q: "Unlike poles of two magnets:", options: ["Repel each other", "Attract each other", "Cancel out", "Create heat"], correct: 1},
+            {topic: "Magnetism", q: "Which metals are primarily known for their magnetic properties?", options: ["Iron, Nickel, Cobalt", "Copper, Aluminium, Gold", "Silver, Zinc, Lead", "All metals"], correct: 0},
+            {topic: "Magnetism", q: "A freely suspended magnet always aligns itself in:", options: ["East-West direction", "North-South direction", "Any random direction", "Vertical direction"], correct: 1},
+            {topic: "Magnetism", q: "What is an electromagnet?", options: ["A permanent magnet", "A magnet made by passing current through a coil", "A natural magnet", "A magnetic compass"], correct: 1},
+            {topic: "Magnetism", q: "Which material inside a coil makes a stronger electromagnet?", options: ["Wood", "Plastic", "Iron", "Copper"], correct: 2},
+            {topic: "Magnetism", q: "The magnetic field around a current-carrying wire is produced:", options: ["Only when current is off", "When current is flowing", "Always, even without current", "Only near a battery"], correct: 1},
+            {topic: "Magnetism", q: "Increasing the number of turns in a coil of an electromagnet:", options: ["Decreases strength", "Increases strength", "Has no effect", "Reverses poles"], correct: 1},
+            {topic: "Magnetism", q: "Natural magnet is:", options: ["Steel bar", "Magnetite", "Electromagnet", "Compass needle"], correct: 1},
+            {topic: "Magnetism", q: "Retentivity is the ability to:", options: ["Get magnetized easily", "Retain magnetism", "Lose magnetism quickly", "Attract only iron"], correct: 1},
+            {topic: "Magnetism", q: "Soft iron has high:", options: ["Retentivity", "Susceptibility", "Both", "Neither"], correct: 1},
+            {topic: "Magnetism", q: "Magnetic field lines never:", options: ["Cross each other", "Form closed loops", "Start from North", "End at South"], correct: 0},
+            {topic: "Magnetism", q: "An electric bell works on the principle of:", options: ["Heating effect", "Magnetic effect of current", "Chemical effect", "Lighting effect"], correct: 1},
+            {topic: "Magnetism", q: "Cutting a bar magnet into two pieces results in:", options: ["Two monopoles", "Two smaller magnets each with N and S poles", "Loss of magnetism", "One North and one South piece"], correct: 1},
+            {topic: "Magnetism", q: "Earth behaves like a giant:", options: ["Electromagnet", "Bar magnet", "Solenoid", "Transformer"], correct: 1},
+            {topic: "Magnetism", q: "The poles of an electromagnet can be reversed by:", options: ["Increasing turns", "Changing direction of current", "Using thicker wire", "Removing iron core"], correct: 1},
+            {topic: "Magnetism", q: "Materials attracted by a magnet are called:", options: ["Diamagnetic", "Paramagnetic", "Ferromagnetic", "Non-magnetic"], correct: 2},
+            {topic: "Magnetism", q: "A compass needle deflects near a current-carrying wire because:", options: ["Wire is hot", "Current produces magnetic field", "Compass is weak", "Wire is magnetic"], correct: 1},
+            {topic: "Magnetism", q: "Permanent magnets are usually made of:", options: ["Soft iron", "Steel or alloys", "Copper", "Aluminium"], correct: 1},
+            {topic: "Magnetism", q: "Magnetic induction means:", options: ["Creating current", "A substance becoming magnetic due to nearby magnet", "Heating a magnet", "Cutting a magnet"], correct: 1},
+            {topic: "Magnetism", q: "Which is a temporary magnet?", options: ["Bar magnet", "Horseshoe magnet", "Electromagnet", "Natural magnet"], correct: 2},
+            {topic: "Magnetism", q: "Strength of electromagnet increases with:", options: ["More turns and more current", "Less turns", "No iron core", "High resistance wire"], correct: 0},
+            {topic: "Magnetism", q: "The device used to detect magnetic field is:", options: ["Ammeter", "Voltmeter", "Magnetic compass", "Galvanometer only"], correct: 2},
+
+            // Dynamics / Force & Motion (28)
+            {topic: "Dynamics", q: "A push or pull applied on an object is called:", options: ["Energy", "Work", "Force", "Pressure"], correct: 2},
+            {topic: "Dynamics", q: "The SI unit of force is:", options: ["Joule", "Newton", "Pascal", "Watt"], correct: 1},
+            {topic: "Dynamics", q: "Force can change:", options: ["Only speed", "Only direction", "Shape, speed or direction", "Only mass"], correct: 2},
+            {topic: "Dynamics", q: "Muscular force is a:", options: ["Non-contact force", "Contact force", "Gravitational force", "Magnetic force"], correct: 1},
+            {topic: "Dynamics", q: "The force exerted by Earth on objects is called:", options: ["Magnetic force", "Electrostatic force", "Gravitational force", "Frictional force"], correct: 2},
+            {topic: "Dynamics", q: "Friction always acts:", options: ["In the direction of motion", "Opposite to the direction of motion", "Perpendicular", "Only when at rest"], correct: 1},
+            {topic: "Dynamics", q: "Which of the following is a non-contact force?", options: ["Muscular force", "Frictional force", "Magnetic force", "Pushing a wall"], correct: 2},
+            {topic: "Dynamics", q: "At least how many objects must interact for a force to act?", options: ["One", "Two", "Three", "None"], correct: 1},
+            {topic: "Dynamics", q: "Which is NOT an effect of force?", options: ["Change speed", "Change direction", "Change mass", "Change shape"], correct: 2},
+            {topic: "Dynamics", q: "The force that opposes relative motion between surfaces is:", options: ["Gravity", "Friction", "Magnetism", "Electrostatic"], correct: 1},
+            {topic: "Dynamics", q: "A ball rolling on a rough surface stops due to:", options: ["Magnetic force", "Friction", "Gravity only", "Electrostatic force"], correct: 1},
+            {topic: "Dynamics", q: "Electrostatic force is a:", options: ["Contact force", "Non-contact force", "Frictional force", "Muscular force"], correct: 1},
+            {topic: "Dynamics", q: "Like charges:", options: ["Attract", "Repel", "Have no force", "Neutralize"], correct: 1},
+            {topic: "Dynamics", q: "Unlike charges:", options: ["Repel", "Attract", "Cancel", "Create magnet"], correct: 1},
+            {topic: "Dynamics", q: "Weight of an object is measured in:", options: ["Kilogram", "Newton", "Gram", "Meter"], correct: 1},
+            {topic: "Dynamics", q: "A spring balance measures:", options: ["Mass", "Weight", "Pressure", "Speed"], correct: 1},
+            {topic: "Dynamics", q: "Friction is greater on:", options: ["Smooth surface", "Rough surface", "Both same", "Glass always"], correct: 1},
+            {topic: "Dynamics", q: "Streamlined shapes reduce:", options: ["Gravity", "Friction due to air/water", "Magnetic force", "Weight"], correct: 1},
+            {topic: "Dynamics", q: "When two forces act in opposite directions and are equal:", options: ["Object accelerates", "Net force is zero", "Object stops forever", "Force multiplies"], correct: 1},
+            {topic: "Dynamics", q: "Force of gravity is always:", options: ["Repulsive", "Attractive", "Zero", "Variable direction"], correct: 1},
+            {topic: "Dynamics", q: "Changing the shape of a rubber band by stretching is due to:", options: ["Magnetic force", "Force applied", "Heat", "Light"], correct: 1},
+            {topic: "Dynamics", q: "Which force is responsible for fruits falling from trees?", options: ["Magnetic", "Electrostatic", "Gravitational", "Muscular"], correct: 2},
+            {topic: "Dynamics", q: "In tug of war, if rope doesn't move, forces are:", options: ["Unbalanced", "Balanced", "Zero", "Magnetic"], correct: 1},
+            {topic: "Dynamics", q: "Muscular force is exerted by:", options: ["Magnets", "Muscles", "Earth", "Charged bodies"], correct: 1},
+            {topic: "Dynamics", q: "Non-contact forces can act:", options: ["Only on contact", "From a distance", "Only on solids", "Never"], correct: 1},
+            {topic: "Dynamics", q: "The standard symbol for Newton is:", options: ["n", "N", "kg", "F"], correct: 1},
+            {topic: "Dynamics", q: "Pushing a door is an example of:", options: ["Non-contact force", "Contact force", "Gravitational force", "Electrostatic force"], correct: 1},
+            {topic: "Dynamics", q: "Friction helps in:", options: ["Walking", "Writing", "Both walking and writing", "Neither"], correct: 2},
+
+            // Sound (27)
+            {topic: "Sound", q: "Sound is produced by:", options: ["Stationary objects", "Vibrating objects", "Magnetic fields", "Heat only"], correct: 1},
+            {topic: "Sound", q: "Sound is a kind of:", options: ["Work", "Energy", "Force", "Pressure"], correct: 1},
+            {topic: "Sound", q: "The hearing range of human ear is:", options: ["20 Hz to 20,000 Hz", "Less than 20 Hz", "More than 20,000 Hz", "20 Hz to 25,000 Hz"], correct: 0},
+            {topic: "Sound", q: "Pitch of sound is determined by its:", options: ["Frequency", "Speed", "Amplitude", "Loudness"], correct: 0},
+            {topic: "Sound", q: "Loudness of sound is determined by:", options: ["Pitch", "Frequency", "Amplitude", "Time period"], correct: 2},
+            {topic: "Sound", q: "Sound cannot travel through:", options: ["Air", "Water", "Iron", "Vacuum"], correct: 3},
+            {topic: "Sound", q: "The voice box is also called:", options: ["Stomach", "Heart", "Larynx", "Mouth"], correct: 2},
+            {topic: "Sound", q: "The unit of frequency is:", options: ["Decibel", "Hertz", "Meter", "Second"], correct: 1},
+            {topic: "Sound", q: "Sound travels fastest in:", options: ["Gases", "Liquids", "Solids", "Vacuum"], correct: 2},
+            {topic: "Sound", q: "Frequency of subsonic sound is:", options: ["More than 20 Hz", "100 Hz", "Less than 20 Hz", "More than 20,000 Hz"], correct: 2},
+            {topic: "Sound", q: "The number of vibrations per second is called:", options: ["Amplitude", "Pitch", "Frequency", "Loudness"], correct: 2},
+            {topic: "Sound", q: "Above which dB sound becomes physically painful?", options: ["40 dB", "60 dB", "80 dB", "100 dB"], correct: 2},
+            {topic: "Sound", q: "A pendulum oscillates 20 times in 4 seconds. Its time period is:", options: ["0.05 s", "0.001 s", "0.2 s", "0.1 s"], correct: 2},
+            {topic: "Sound", q: "An object vibrating at 50 Hz has time period:", options: ["0.02 s", "2 s", "0.2 s", "20 s"], correct: 0},
+            {topic: "Sound", q: "Length of vocal cords in men is about:", options: ["5 mm", "10 mm", "15 mm", "20 mm"], correct: 3},
+            {topic: "Sound", q: "Length of vocal cords in women is about:", options: ["5 mm", "10 mm", "15 mm", "20 mm"], correct: 2},
+            {topic: "Sound", q: "To and fro motion of an object is called:", options: ["Frequency", "Amplitude", "Vibration", "Time period"], correct: 2},
+            {topic: "Sound", q: "Speed of sound in air is approximately:", options: ["110 m/s", "220 m/s", "330 m/s", "440 m/s"], correct: 2},
+            {topic: "Sound", q: "In dholak, sound is produced by:", options: ["Stretched membrane", "Stretched strings", "Air column", "None"], correct: 0},
+            {topic: "Sound", q: "A shehnai produces sound from:", options: ["Vibrating strings", "Vibrating membrane", "Vibrating air column", "None"], correct: 2},
+            {topic: "Sound", q: "Sound having frequency below 20 Hz is called:", options: ["Infrasound", "Ultrasound", "Sonic", "Audible"], correct: 0},
+            {topic: "Sound", q: "Sound above 20,000 Hz is called:", options: ["Infrasound", "Ultrasound", "Audible sound", "Sonic sound"], correct: 1},
+            {topic: "Sound", q: "The maximum displacement from mean position is:", options: ["Frequency", "Amplitude", "Time period", "Pitch"], correct: 1},
+            {topic: "Sound", q: "Cochlea is a part of:", options: ["Hearing organ", "Sound producing organ", "Muscular organ", "Digestive system"], correct: 0},
+            {topic: "Sound", q: "If we tighten the strings of an instrument, pitch becomes:", options: ["Higher", "Lower", "Constant", "Zero"], correct: 0},
+            {topic: "Sound", q: "Sound usually travels through which medium to our ears?", options: ["Water", "Wood", "Air", "Vacuum"], correct: 2},
+            {topic: "Sound", q: "1 hertz is equal to:", options: ["1 vibration per minute", "10 vibrations per minute", "60 vibrations per minute", "1 vibration per second"], correct: 3}
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let timerInterval;
+        let timeLeft = 60;
+        let answered = false;
+
+        const quizArea = document.getElementById('quiz-area');
+        const timerEl = document.getElementById('timer');
+        const qNumber = document.getElementById('q-number');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const progress = document.getElementById('progress');
+        const controls = document.getElementById('controls');
+
+        function startTimer() {
+            timeLeft = 60;
+            answered = false;
+            timerEl.textContent = timeLeft;
+            timerEl.className = 'timer';
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                if (timeLeft <= 10) timerEl.classList.add('warning');
+                if (timeLeft <= 5) timerEl.classList.add('danger');
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        function timeUp() {
+            if (!answered) {
+                showFeedback(false);
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showQuestion() {
+            if (currentQ >= questions.length) {
+                showResult();
+                return;
+            }
+            const q = questions[currentQ];
+            qNumber.textContent = `Question ${currentQ + 1} of ${questions.length}`;
+            progress.style.width = `${((currentQ) / questions.length) * 100}%`;
+            scoreDisplay.textContent = `Score: ${score}`;
+
+            quizArea.innerHTML = `
+                <div class="topic-badge">${q.topic}</div>
+                <div class="question">${q.q}</div>
+                <div class="options" id="options"></div>
+                <div class="feedback" id="feedback"></div>
+            `;
+
+            const optionsDiv = document.getElementById('options');
+            q.options.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.textContent = `${String.fromCharCode(65 + i)}. ${opt}`;
+                div.onclick = () => selectOption(i, div);
+                optionsDiv.appendChild(div);
+            });
+
+            nextBtn.disabled = true;
+            startTimer();
+        }
+
+        function selectOption(index, element) {
+            if (answered) return;
+            answered = true;
+            clearInterval(timerInterval);
+            const q = questions[currentQ];
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if (index === q.correct) {
+                element.classList.add('correct');
+                score++;
+                showFeedback(true);
+            } else {
+                element.classList.add('incorrect');
+                options[q.correct].classList.add('correct');
+                showFeedback(false);
+            }
+            nextBtn.disabled = false;
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        function showFeedback(correct) {
+            const fb = document.getElementById('feedback');
+            fb.textContent = correct ? "✓ Correct!" : "✗ Incorrect / Time's up";
+            fb.style.color = correct ? "#27ae60" : "#e74c3c";
+        }
+
+        nextBtn.onclick = () => {
+            currentQ++;
+            showQuestion();
+        };
+
+        function showResult() {
+            clearInterval(timerInterval);
+            const percent = Math.round((score / questions.length) * 100);
+            quizArea.innerHTML = `
+                <div class="result">
+                    <h2>Quiz Completed!</h2>
+                    <div class="score">${score} / ${questions.length}</div>
+                    <p style="margin: 15px 0; font-size: 1.2em;">${percent}%</p>
+                    <p>Great effort on Magnetism, Dynamics & Sound!</p>
+                    <button class="restart" onclick="location.reload()">Restart Quiz</button>
+                </div>
+            `;
+            controls.style.display = 'none';
+            progress.style.width = '100%';
+        }
+
+        // Start
+        showQuestion();
+    </script>
+</body>
+</html>
